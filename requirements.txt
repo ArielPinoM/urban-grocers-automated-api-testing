@@ -1,2 +1,17 @@
+# Test Framework
 pytest==9.0.3
+
+# HTTP client for API consumption
 requests==2.34.2
+
+# Environment variable management (.env)
+# python-dotenv==
+
+# Environment variable integration with pytest
+# pytest-env
+
+# Dynamic test data generation
+# Faker
+
+# JSON schema validation
+# jsonschema
