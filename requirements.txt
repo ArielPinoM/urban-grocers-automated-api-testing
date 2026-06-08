@@ -11,7 +11,7 @@ requests==2.34.2
 # pytest-env
 
 # Dynamic test data generation
-# Faker
+faker==40.21.0
 
 # JSON schema validation
 # jsonschema
