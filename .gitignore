@@ -1,0 +1,34 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs & reports
+logs/
+*.log
+.pytest_cache/
+.html
+.xml
+allure-results/
+
+# Environment variables
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+.pytest/
