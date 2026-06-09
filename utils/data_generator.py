@@ -26,12 +26,13 @@ def generate_valid_first_name(min_length: int = 2, max_length: int = 15) -> str:
         Nombre que cumple las reglas de validación
     """
     # Faker genera nombres reales que normalmente cumplen, pero forzamos longitud
-    name = fake.first_name()
-    if len(name) < min_length:
-        name = name + fake.random_letter() * (min_length - len(name))
-    elif len(name) > max_length:
-        name = name[:max_length]
-    return name
+    # Tomamos letras ASCII mayúsculas y minúsculas
+    allowed_chars = string.ascii_letters
+    # Generamos una longitud aleatoria dentro del rango
+    length = random.randint(min_length, max_length)
+    name = ''.join(random.choice(allowed_chars) for _ in range(length))
+    # Capitalizamos la primera letra
+    return name.capitalize()
 
 def generate_valid_phone() -> str:
     """
@@ -40,9 +41,10 @@ def generate_valid_phone() -> str:
     Returns:
         Ejemplo: +34612345678
     """
-    # Genera número de 10-12 dígitos después del +
-    digits = ''.join(str(random.randint(0, 9)) for _ in range(random.randint(10, 12)))
-    return f'+{digits}'
+    # Genera número de 10-12 dígitos después del +1
+    digits_count = random.randint(10, 12)
+    digits = ''.join(str(random.randint(0, 9)) for _ in range(digits_count))
+    return f'+1{digits}'
 
 def generate_valid_address(min_length: int = 5, max_length: int = 50) -> str:
     """
@@ -51,7 +53,7 @@ def generate_valid_address(min_length: int = 5, max_length: int = 50) -> str:
     Returns:
         Dirección aleatoria válida
     """
-    address = fake.stree_address()
+    address = fake.street_address()
     # Asegurar longitud de rango
     if len(address) < min_length:
         address = address + ' ' + fake.city()[:min_length - len(address)]

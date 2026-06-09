@@ -46,7 +46,7 @@ class UserClient(BaseClient):
         """
         response = self.post(
             endpoint="/api/v1/users",
-            data=payload,
+            json=payload,
             expected_status=expected_status
         )
         return response

@@ -204,6 +204,6 @@ class BaseClient:
         """Soporte para context manager (with statement)"""
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         """Cierra la sesión al salir del context manager"""
         self.close()
