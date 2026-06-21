@@ -2,6 +2,7 @@
 Cliente para interactuar con el endpoint de usuarios de Urban Grocers API.
 Maneja la creación de usuarios y obtención de tokens de autenticación.
 """
+from typing import Optional
 
 from core.base_client import BaseClient
 
@@ -76,8 +77,8 @@ class UserClient(BaseClient):
             first_name: str,
             phone: str,
             address: str,
-            email: str = None,
-            comment: str = None,
+            email: Optional[str] = None,
+            comment: Optional[str] = None,
             expected_status: int = 201
     ) -> dict:
         """

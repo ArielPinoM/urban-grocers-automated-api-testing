@@ -7,18 +7,18 @@ Valida la creación de usuarios y la creación de kits de productos, con especia
 
 ## 🧠 Tecnologías y técnicas utilizadas
 
-| Tecnología / Técnica                | Propósito                                                                                                         |
-|-------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| **Python 3.14.5**                   | Lenguaje principal                                                                                                |
-| **Pytest 9.0.3**                    | Framework de pruebas (parametrización, fixtures, aserciones)                                                      |
-| **Requests 2.34.2**                       | Cliente HTTP para consumir la API REST                                                                            |
-| **POO (Herencia, encapsulamiento)** | `BaseClient` abstracto + `UserClient` / `KitClient` específicos                                                   |
-| **Context Managers (`with`)**       | Cierre automático de sesiones HTTP                                                                                |
-| **Fixtures de Pytest**              | Reutilización de clientes, token de autenticación, datos de prueba                                                |
-| **Variables de entorno**            | Configuración dinámica (URL de servidor, timeouts, nivel de log)                                                  |
+| Tecnología / Técnica                | Propósito                                                                                                                |
+|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| **Python 3.14.5**                   | Lenguaje principal                                                                                                       |
+| **Pytest 9.0.3**                    | Framework de pruebas (parametrización, fixtures, aserciones)                                                             |
+| **Requests 2.34.2**                 | Cliente HTTP para consumir la API REST                                                                                   |
+| **POO (Herencia, encapsulamiento)** | `BaseClient` abstracto + `UserClient` / `KitClient` específicos                                                          |
+| **Context Managers (`with`)**       | Cierre automático de sesiones HTTP                                                                                       |
+| **Fixtures de Pytest**              | Reutilización de clientes, token de autenticación, datos de prueba                                                       |
+| **Variables de entorno**            | Configuración dinámica (URL de servidor, timeouts, nivel de log)                                                         |
 | **Generación de datos**             | `Faker 40.21.0` + lógica personalizada para datos válidos (nombres, teléfonos, direcciones, kits con longitudes exactas) |
-| **Manejo de logs**                  | Logging configurable (INFO / DEBUG) para seguimiento de peticiones                                                |
-| **Validación de contratos**         | Comparación automática entre payload enviado y respuesta recibida                                                 |
+| **Manejo de logs**                  | Logging configurable (INFO / DEBUG) para seguimiento de peticiones                                                       |
+| **Validación de contratos**         | Comparación automática entre payload enviado y respuesta recibida                                                        |
 
 ---
 
@@ -42,17 +42,17 @@ urban-grocers-api-tests/
 
 ## ✅ Cobertura de pruebas (9 checkpoints en el campo `name`)
 
-| # | Escenario | Payload `{"name": ...}` | Código esperado | Resultado |
-|---|-----------|------------------------|----------------|-----------|
-| 1 | 1 carácter | `"a"` | 201 | ✅ PASS |
-| 2 | 511 caracteres | string de 511 letras/espacios | 201 | ✅ PASS |
-| 3 | 0 caracteres | `""` | 400 | ❌ FAIL (API devuelve 201) |
-| 4 | 512 caracteres | string de 512 letras/espacios | 400 | ❌ FAIL (API devuelve 201) |
-| 5 | Caracteres especiales | `"№%@\","` | 201 | ✅ PASS |
-| 6 | Espacios | `" A Aaa "` | 201 | ✅ PASS |
-| 7 | Solo números | `"123"` | 201 | ✅ PASS |
-| 8 | Parámetro `name` ausente | `{}` | 400 | ❌ FAIL (KeyError en test) |
-| 9 | Tipo incorrecto (número) | `123` (sin comillas) | 400 | ❌ FAIL (API devuelve 201) |
+| # | Escenario                | Payload `{"name": ...}`       | Código esperado | Resultado                 |
+|---|--------------------------|-------------------------------|-----------------|---------------------------|
+| 1 | 1 carácter               | `"a"`                         | 201             | ✅ PASS                    |
+| 2 | 511 caracteres           | string de 511 letras/espacios | 201             | ✅ PASS                    |
+| 3 | 0 caracteres             | `""`                          | 400             | ❌ FAIL (API devuelve 201) |
+| 4 | 512 caracteres           | string de 512 letras/espacios | 400             | ❌ FAIL (API devuelve 201) |
+| 5 | Caracteres especiales    | `"№%@\","`                    | 201             | ✅ PASS                    |
+| 6 | Espacios                 | `" A Aaa "`                   | 201             | ✅ PASS                    |
+| 7 | Solo números             | `"123"`                       | 201             | ✅ PASS                    |
+| 8 | Parámetro `name` ausente | `{}`                          | 400             | ❌ FAIL (KeyError en test) |
+| 9 | Tipo incorrecto (número) | `123` (sin comillas)          | 400             | ❌ FAIL (API devuelve 201) |
 
 > **Nota:** Los fallos detectados demuestran discrepancias entre la documentación y el comportamiento real de la API. El framework cumple su función: **alertar sobre inconsistencias**.
 
