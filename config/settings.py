@@ -1,59 +1,58 @@
 """
-Configuración central del framework utilizando variables de entorno.
+Central configuration for the test framework using environment variables.
 
-BASE_URL es obligatoria (se genera dinámicamente en TripleTen y caduca).
-
-Otras variables tienen valores por defecto.
+`BASE_URL` is required (it is generated dynamically by TripleTen and expires).
+Other settings have sensible defaults.
 """
 
 import os
 
 def get_required_env(var_name: str) -> str:
     """
-    Obtiene una variable de entorno obligatoria.
+    Retrieve a required environment variable.
 
     Args:
-        var_name: Nombre de la variable de entorno
+        var_name: Environment variable name
 
     Returns:
-        Valor de la variable
+        The variable value
 
     Raises:
-        EnvironmentError: Si la variable no está definida
+        EnvironmentError: if the variable is not set
     """
     value = os.getenv(var_name)
     if value is None:
         raise EnvironmentError(
-            f"❌ La variable de entorno '{var_name}' es obligatoria.\n"
-            f"Por favor, pásala al ejecutar pytest:\n"
-            f"   Linux/Mac: {var_name}=<valor> pytest\n"
-            f"   Windows CMD: set {var_name}=<valor> && pytest\n"
-            f"   Windows PowerShell: $env: {var_name}='<valor>'; pytest"
+            f"❌ The environment variable '{var_name}' is required.\n"
+            f"Please pass it when running pytest:\n"
+            f"   Linux/Mac: {var_name}=<value> pytest\n"
+            f"   Windows CMD: set {var_name}=<value> && pytest\n"
+            f"   Windows PowerShell: $env:{var_name}='<value>'; pytest\n"
         )
     return value
 
 def get_optional_env(var_name: str, default: str) -> str:
     """
-    Obtiene una variable de entorno opcional con valor por defecto.
+    Retrieve an optional environment variable with a default value.
 
     Args:
-        var_name: Nombre de la variable de entorno
-        default: Valor por defecto si no está definida
+        var_name: Environment variable name
+        default: Default value if not set
 
     Returns:
-        Valor de la variable o default
+        The variable value or the provided default
     """
     return os.getenv(var_name, default)
 
 
 # ============================================
-# Variables de entorno obligatorias
+# Required environment variables
 # ============================================
 BASE_URL = get_required_env("BASE_URL")
 
 
 # ============================================
-# Variables de entorno opcionales
+# Optional environment variables
 # ============================================
 TIMEOUT = int(get_optional_env("TIMEOUT", "10"))
 LOG_LEVEL = get_optional_env("LOG_LEVEL", "INFO")
@@ -61,7 +60,7 @@ ENVIRONMENT = get_optional_env("ENVIRONMENT", "tripleten")
 
 
 # ============================================
-# Headers por defecto para todas las peticiones
+# Default headers for all requests
 # ============================================
 DEFAULT_HEADERS = {
     "Content-Type": "application/json"
@@ -69,14 +68,15 @@ DEFAULT_HEADERS = {
 
 
 # ============================================
-# Validación adicional
+# Additional validation
 # ============================================
 def validate_config():
-    """Valida que la configuración sea consistente."""
+    """Validate that configuration values are consistent."""
     if not BASE_URL.startswith(("http://", "https://")):
-        raise ValueError(f"BASE_URL debe comenzar con http:// o https://. Actual: {BASE_URL}")
+        raise ValueError(f"BASE_URL must start with http:// or https://. Actual: {BASE_URL}")
     if TIMEOUT <= 0:
-        raise ValueError(f"TIMEOUT debe ser positivo. Actual: {TIMEOUT}")
+        raise ValueError(f"TIMEOUT must be positive. Actual: {TIMEOUT}")
 
-# Ejecutar validación al importar el módulo
+
+# Run validation on import
 validate_config()

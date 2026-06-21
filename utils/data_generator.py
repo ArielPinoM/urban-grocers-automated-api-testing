@@ -1,7 +1,7 @@
 """
-Generador de datos de prueba dinámicos para Urban Grocers API.
+Dynamic test data generator for the Urban Grocers API.
 
-Utiliza Faker para crear datos realistas pero válidos según las reglas de negocio.
+Uses Faker to produce realistic, business-rule-compliant test data.
 """
 
 
@@ -10,23 +10,23 @@ import random
 import string
 
 
-# Configurar locale para nombres en alfabeto latino (evita caracteres no latinos)
-fake = Faker('es_ES') # Usa español pero mantiene letras latinas
+# Configure locale to produce Latin-alphabet names (avoids non-latin characters)
+fake = Faker('es_ES')  # Spanish locale to generate Latin-based names
 
 
 def generate_valid_first_name(min_length: int = 2, max_length: int = 15) -> str:
     """
-    Genera un nombre válido (solo letras latinas, longitud entre 2 y 15).
+    Generate a valid first name (Latin letters only, length between 2 and 15).
 
     Args:
-        min_length: Longitud minima (default 2)
-        max_length: Longitud maxima (default 15)
+        min_length: Minimum length (default 2)
+        max_length: Maximum length (default 15)
 
     Returns:
-        Nombre que cumple las reglas de validación
+        A name that complies with validation rules.
     """
-    # Faker genera nombres reales que normalmente cumplen, pero forzamos longitud
-    # Tomamos letras ASCII mayúsculas y minúsculas
+    # Faker typically produces valid names, but we enforce length and allowed chars.
+    # Use ASCII letters to guarantee Latin-only characters.
     allowed_chars = string.ascii_letters
     # Generamos una longitud aleatoria dentro del rango
     length = random.randint(min_length, max_length)
@@ -36,22 +36,22 @@ def generate_valid_first_name(min_length: int = 2, max_length: int = 15) -> str:
 
 def generate_valid_phone() -> str:
     """
-    Genera un número de teléfono valido: solo números y signo +, formato internacional.
+    Generate a valid phone number in international format (leading '+').
 
     Returns:
-        Ejemplo: +34612345678
+        Example: +11234567890
     """
-    # Genera número de 10-12 dígitos después del +1
+    # Generate 10-12 digits after the country code
     digits_count = random.randint(10, 12)
     digits = ''.join(str(random.randint(0, 9)) for _ in range(digits_count))
     return f'+1{digits}'
 
 def generate_valid_address(min_length: int = 5, max_length: int = 50) -> str:
     """
-    Genera una dirección válida: letras latinas, espacios, puntuación, longitud 5-50.
+    Generate a valid address: Latin characters, spaces, punctuation, length 5-50.
 
     Returns:
-        Dirección aleatoria válida
+        A random valid address string.
     """
     address = fake.street_address()
     # Asegurar longitud de rango
@@ -63,13 +63,13 @@ def generate_valid_address(min_length: int = 5, max_length: int = 50) -> str:
 
 def generate_user_payload(include_optional: bool = False) -> dict:
     """
-    Genera un payload completo para creación de usuario.
+    Generate a full payload for user creation.
 
     Args:
-        include_optional: Si True, incluye email y comment (opcionales)
+        include_optional: If True, include optional `email` and `comment` fields.
 
     Returns:
-        Diccionario con campos requeridos (y opcionales según flag)
+        A dict containing required (and optional) fields.
     """
     payload = {
         "firstName": generate_valid_first_name(),
@@ -83,13 +83,13 @@ def generate_user_payload(include_optional: bool = False) -> dict:
 
 def generate_kit_name(length: int) -> str:
     """
-    Genera un nombre de kit con una longitud específica.
+    Generate a kit name with a specific length.
 
     Args:
-        length: Longitud deseada del string
+        length: Desired string length
 
     Returns:
-        String de exactamente 'length' caracteres (letras latinas + espacios)
+        String of exactly `length` characters (Latin letters + spaces).
     """
     if length == 0:
         return ''
@@ -99,15 +99,15 @@ def generate_kit_name(length: int) -> str:
     name = ''.join(random.choice(chars) for _ in range(length))
     return name
 
-def generate_kit_name_with_special_chars(length: int = 5) -> str:
+def generate_kit_name_with_special_chars(length: int) -> str:
     """
-    Genera un nombre de kit con caracteres especiales (ej.: "№%@",)
+    Generate a kit name containing special characters (e.g. "№%@,").
 
     Args:
-        length: Longitud deseada
+        length: Desired length
 
     Returns:
-        String con caracteres especiales
+        String that may include special characters.
     """
     specials = "№%@\","
     # Mezcla caracteres especiales y algunos normales
@@ -116,13 +116,13 @@ def generate_kit_name_with_special_chars(length: int = 5) -> str:
 
 def generate_kit_name_with_spaces(length: int = 6) -> str:
     """
-    Genera un nombre de kit con espacios al inicio, interior y final.
+    Generate a kit name that includes leading, internal, and trailing spaces.
 
     Args:
-        length: Longitud total incluyendo espacios.
+        length: Total length including spaces.
 
     Returns:
-        String como " A Aaa " (espacios alrededor).
+        Example string like " A Aaa " (with spaces around).
     """
     if length < 3:
         return " A "

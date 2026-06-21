@@ -1,7 +1,7 @@
 """
-Fixtures globales de pytest para el framework de Urban Grocers API.
+Global pytest fixtures for the Urban Grocers API framework.
 
-Proporcionan clientes HTTP reutilizables y autenticación.
+Provide reusable HTTP clients and authentication helpers for tests.
 """
 
 import pytest
@@ -14,9 +14,9 @@ from config.settings import BASE_URL, TIMEOUT, DEFAULT_HEADERS
 @pytest.fixture(scope="session")
 def base_client():
     """
-    Fixture de sesión que proporciona una instancia de BaseClient.
+    Session-scoped fixture that yields a `BaseClient` instance.
 
-    Reutiliza la misma sesión HTTP para todas las pruebas (eficiente).
+    Reuses a single HTTP session across all tests for efficiency.
     """
     with BaseClient(
         base_url=BASE_URL,
@@ -24,28 +24,28 @@ def base_client():
         timeout=TIMEOUT,
     ) as client:
         yield client
-    # Al salir del contexto, se cierra la sesión automáticamente
+    # The HTTP session is closed automatically on context exit.
 
 @pytest.fixture(scope="session")
 def user_client(base_client):
-    """Fixture de sesión que proporciona UserClient."""
+    """Session-scoped fixture that provides a `UserClient`."""
     return UserClient(base_client)
 
 @pytest.fixture(scope="session")
 def kit_client(base_client):
-    """Fixture de sesión que proporciona KitClient."""
+    """Session-scoped fixture that provides a `KitClient`."""
     return KitClient(base_client)
 
 @pytest.fixture(scope="function")
 def registered_user_token(user_client):
     """
-    Fixture de función que crea un usuario válido y retorna su token de autenticación.
+    Function-scoped fixture that creates a valid user and yields its auth token.
 
-    Cada prueba recibe un usuario fresco y aislado.
+    Each test receives a fresh, isolated user.
     """
-    payload = generate_user_payload(include_optional=False) # Solo campos requeridos
+    payload = generate_user_payload(include_optional=False)  # only required fields
     response = user_client.create_user(payload=payload, expected_status=201)
     token = response["authToken"]
     yield token
-    # No hay endpoint de eliminación de usuarios, por lo que no se realiza limpieza.
-    # La API de Urban Grocers no parece requerir cleanup explícito.
+    # There is no user-deletion endpoint, so no cleanup is performed.
+    # The API does not appear to require explicit teardown for created users.

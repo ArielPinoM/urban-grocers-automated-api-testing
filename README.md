@@ -1,93 +1,92 @@
 # 🚀 Urban Grocers API Test Automation Framework
 
-Framework de automatización de pruebas para la API de **Urban Grocers**, diseñado con **Python**, **Pytest** y un estricto enfoque de **Programación Orientada a Objetos (POO)**.  
-Valida la creación de usuarios y la creación de kits de productos, con especial énfasis en el campo `name` (9 casos de prueba). Ideal para demostrar habilidades avanzadas en automatización de APIs, manejo de sesiones HTTP, fixtures reutilizables y generación dinámica de datos.
+API test automation framework for **Urban Grocers**, implemented in **Python** with **Pytest** and an object-oriented design. This framework verifies user creation and product-kit creation flows with a focused test matrix for the `name` field (9 test scenarios). It demonstrates advanced API automation practices: HTTP session management, reusable fixtures, parametrized tests, and dynamic test-data generation.
 
 ---
 
-## 🧠 Tecnologías y técnicas utilizadas
+## 🧠 Technologies and Techniques
 
 | Tecnología / Técnica                | Propósito                                                                                                                |
 |-------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| **Python 3.14.5**                   | Lenguaje principal                                                                                                       |
-| **Pytest 9.0.3**                    | Framework de pruebas (parametrización, fixtures, aserciones)                                                             |
-| **Requests 2.34.2**                 | Cliente HTTP para consumir la API REST                                                                                   |
-| **POO (Herencia, encapsulamiento)** | `BaseClient` abstracto + `UserClient` / `KitClient` específicos                                                          |
-| **Context Managers (`with`)**       | Cierre automático de sesiones HTTP                                                                                       |
-| **Fixtures de Pytest**              | Reutilización de clientes, token de autenticación, datos de prueba                                                       |
-| **Variables de entorno**            | Configuración dinámica (URL de servidor, timeouts, nivel de log)                                                         |
-| **Generación de datos**             | `Faker 40.21.0` + lógica personalizada para datos válidos (nombres, teléfonos, direcciones, kits con longitudes exactas) |
-| **Manejo de logs**                  | Logging configurable (INFO / DEBUG) para seguimiento de peticiones                                                       |
-| **Validación de contratos**         | Comparación automática entre payload enviado y respuesta recibida                                                        |
+| **Python 3.14.5**                   | Primary language                                                                                                         |
+| **Pytest 9.0.3**                    | Test framework (parametrization, fixtures, assertions)                                                                  |
+| **Requests 2.34.2**                 | HTTP client for exercising the REST API                                                                                 |
+| **OOP (inheritance, encapsulation)**| Abstract `BaseClient` with concrete `UserClient` and `KitClient` implementations                                       |
+| **Context Managers (`with`)**       | Ensures HTTP sessions are closed automatically                                                                           |
+| **Pytest Fixtures**                 | Reusable clients, auth tokens, and test-data setup                                                                      |
+| **Environment variables**           | Dynamic configuration (server URL, timeouts, log level)                                                                 |
+| **Test data generation**            | `Faker 40.21.0` plus custom logic for producing valid business-oriented data (names, phones, addresses, precise-length kit names) |
+| **Logging**                         | Configurable logging (INFO / DEBUG) to inspect request/response payloads                                                |
+| **Contract validation**             | Automated checks comparing sent payloads and API responses                                                             |
 
 ---
 
-## 📁 Estructura del proyecto (diseño limpio y mantenible)
+## 📁 Project Structure (clean, maintainable design)
 
 ```
 urban-grocers-api-tests/
-├── config/ # Configuración desde variables de entorno
-├── core/ # Cliente base HTTP (BaseClient) y excepciones
-├── api_clients/ # Clientes específicos (UserClient, KitClient)
-├── models/ # Modelos de datos (placeholders para futuro tipado)
-├── utils/ # Generadores de datos (data_generator.py)
-├── tests/ # Casos de prueba parametrizados
-├── conftest.py # Fixtures globales (base_client, auth token)
+├── config/ # Set environment variables
+├── core/ # HTTP Base Client (BaseClient)
+├── api_clients/ # Specific clients (UserClient, KitClient)
+├── utils/ # (data_generator.py)
+├── tests/ # Parametrized tests
+├── conftest.py # Global fixtures (base_client, auth token)
 ├── requirements.txt # Dependencias
-├── .env.example # Plantilla de variables de entorno
-└── README.md # Este archivo
+├── .env.example # Environment variables template
+└── README.md # This file
 ```
 
 ---
 
-## ✅ Cobertura de pruebas (9 checkpoints en el campo `name`)
+## ✅ Test Coverage (9 checkpoints for the `name` field)
 
 | # | Escenario                | Payload `{"name": ...}`       | Código esperado | Resultado                 |
 |---|--------------------------|-------------------------------|-----------------|---------------------------|
-| 1 | 1 carácter               | `"a"`                         | 201             | ✅ PASS                    |
-| 2 | 511 caracteres           | string de 511 letras/espacios | 201             | ✅ PASS                    |
-| 3 | 0 caracteres             | `""`                          | 400             | ❌ FAIL (API devuelve 201) |
-| 4 | 512 caracteres           | string de 512 letras/espacios | 400             | ❌ FAIL (API devuelve 201) |
-| 5 | Caracteres especiales    | `"№%@\","`                    | 201             | ✅ PASS                    |
-| 6 | Espacios                 | `" A Aaa "`                   | 201             | ✅ PASS                    |
-| 7 | Solo números             | `"123"`                       | 201             | ✅ PASS                    |
-| 8 | Parámetro `name` ausente | `{}`                          | 400             | ❌ FAIL (KeyError en test) |
-| 9 | Tipo incorrecto (número) | `123` (sin comillas)          | 400             | ❌ FAIL (API devuelve 201) |
+| 1 | Single character         | `"a"`                         | 201             | ✅ PASS                    |
+| 2 | 511 characters          | 511-character string (letters/spaces) | 201       | ✅ PASS                    |
+| 3 | Empty string            | `""`                          | 400             | ❌ FAIL (API returns 201)  |
+| 4 | 512 characters         | 512-character string (letters/spaces) | 400       | ❌ FAIL (API returns 201)  |
+| 5 | Special characters      | `"№%@\","`                | 201             | ✅ PASS                    |
+| 6 | Leading/trailing spaces | `" A Aaa "`                   | 201             | ✅ PASS                    |
+| 7 | Numbers only           | `"123"`                       | 201             | ✅ PASS                    |
+| 8 | Missing `name` param   | `{}`                            | 400             | ❌ FAIL (KeyError in test) |
+| 9 | Wrong type (number)    | `123` (not quoted)              | 400             | ❌ FAIL (API returns 201)  |
 
-> **Nota:** Los fallos detectados demuestran discrepancias entre la documentación y el comportamiento real de la API. El framework cumple su función: **alertar sobre inconsistencias**.
+> **Note:** Failures indicate discrepancies between API documentation and observed behavior. The framework's purpose is to detect and report these inconsistencies so developers and API owners can triage them.
 
 ---
 
-## ▶️ Ejecución de las pruebas
+## ▶️ Running the tests
 
-La URL base del servidor se genera automáticamente al iniciar el servidor en el portal de **TripleTen** y **caduca después de un tiempo**. Por lo tanto, **no debe guardarse** en archivos de configuración fijos, sino pasarse como variable de entorno cada vez que ejecutes las pruebas.
+The server base URL is generated dynamically by TripleTen and expires after a short time. Do NOT hardcode the URL into project files; pass it as an environment variable when running tests.
 
-Sigue estos pasos:
+Quick run steps:
 
-1. **Abre una terminal** (PowerShell, CMD, o bash) y navega hasta la raíz del proyecto:
-   ```bash
-   cd ruta/del/proyecto/urban-grocers-automated-api-testing
-   
-2. **Activa el entorno virtual** (opcional pero recomendado):
+1. Open a terminal (PowerShell, CMD, or bash) and change directory to the project root:
+```bash
+cd path/to/project/urban-grocers-automated-api-testing
+```
+2. (Optional) Activate your virtual environment:
 - Windows: .venv\Scripts\activate
-- Linux/Mac: source .venv/bin/activate
+- Linux/macOS: source .venv/bin/activate
 
-3. **Copia la URL** que te proporciona TripleTen al iniciar el servidor.
-- Ejemplo: https://cnt-47557993-38e5-45a3-8932-e46160c6178a.containerhub.tripleten-services.com
-4. **Ejecuta el comando correspondiente a tu sistema operativo**, reemplazando <tu-servidor> por la URL real:
+3. Copy the temporary URL produced by TripleTen when the test server starts.
+Example: https://cnt-47557993-38e5-45a3-8932-e46160c6178a.containerhub.tripleten-services.com
+
+4. Run the targeted test file, replacing <your-server> with the real URL:
 - PowerShell (Windows)
-```text
-$env:BASE_URL="https://<tu-servidor>.tripleten-services.com"; $env:LOG_LEVEL="INFO"; pytest tests/test_user_kit_creation.py -v
+```powershell
+$env:BASE_URL="https://<your-server>.tripleten-services.com"; $env:LOG_LEVEL="INFO"; pytest tests/test_user_kit_creation.py -v
 ```
 - CMD (Windows)
-```text
-set BASE_URL=https://<tu-servidor>.tripleten-services.com && set LOG_LEVEL=INFO && pytest tests/test_user_kit_creation.py -v
+```cmd
+set BASE_URL=https://<your-server>.tripleten-services.com && set LOG_LEVEL=INFO && pytest tests/test_user_kit_creation.py -v
 ```
 - Linux / macOS (bash/zsh)
-```text
-BASE_URL=https://<tu-servidor>.tripleten-services.com LOG_LEVEL=INFO pytest tests/test_user_kit_creation.py -v
+```bash
+BASE_URL=https://<your-server>.tripleten-services.com LOG_LEVEL=INFO pytest tests/test_user_kit_creation.py -v
 ```
 
-> Nota
-> - La variable LOG_LEVEL es opcional. Por defecto se usa INFO. Si cambias su valor a DEBUG, verás en la consola los cuerpos de las peticiones y respuestas, útil para depurar fallos.
-> - También puedes ejecutar todas las pruebas del proyecto usando pytest tests/ en lugar de apuntar a un archivo específico.
+Notes:
+- `LOG_LEVEL` is optional and defaults to `INFO`. Set it to `DEBUG` to print request/response bodies for troubleshooting.
+- To run the full test suite use `pytest tests/`.
